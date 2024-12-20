@@ -1,0 +1,84 @@
+package main
+
+import (
+	"fmt"
+	"os"
+	"time"
+	"strconv"
+)
+
+// Fungsi untuk melakukan pengurutan menggunakan metode Insertion Sort Iteratif
+func insertionSortIterative(arr []int) []int {
+	start := time.Now()
+	// Melakukan pengurutan array dengan algoritma Insertion Sort
+	for i := 1; i < len(arr); i++ {
+		key := arr[i]
+		j := i - 1
+		// Memindahkan elemen yang lebih besar dari key ke posisi yang lebih kanan
+		for j >= 0 && arr[j] > key {
+			arr[j+1] = arr[j]
+			j--
+		}
+		// Menempatkan key di posisi yang benar
+		arr[j+1] = key
+	}
+	elapsed := time.Since(start)
+	// Menampilkan waktu eksekusi algoritma
+	fmt.Printf("Waktu eksekusi Iteratif: %v\n", elapsed)
+	return arr
+}
+
+func main() {
+	// Menampilkan antarmuka pengguna untuk memasukkan data
+	for {
+		var n int
+		// Meminta input jumlah elemen dari pengguna
+		fmt.Print("Masukkan jumlah elemen: ")
+		_, err := fmt.Scan(&n)
+		if err != nil || n <= 0 {
+			// Menangani input yang tidak valid
+			fmt.Println("Input tidak valid. Harap masukkan angka positif.")
+			continue
+		}
+
+		// Membuat array dengan panjang sesuai input
+		arr := make([]int, n)
+		fmt.Println("Masukkan elemen array:")
+
+		// Meminta input untuk elemen array
+		for i := 0; i < n; i++ {
+			var element string
+			_, err := fmt.Scan(&element)
+			if err != nil {
+				// Menangani kesalahan input
+				fmt.Println("Input tidak valid. Pastikan Anda hanya memasukkan angka.")
+				os.Exit(1)
+			}
+			// Mengonversi input string menjadi angka
+			num, err := strconv.Atoi(element)
+			if err != nil {
+				// Menangani kesalahan konversi
+				fmt.Println("Input tidak valid. Pastikan Anda hanya memasukkan angka.")
+				os.Exit(1)
+			}
+			arr[i] = num
+		}
+
+		// Menampilkan array sebelum diurutkan
+		fmt.Println("Array sebelum diurutkan:", arr)
+
+		// Mengurutkan array dan menampilkan hasil
+		sortedArr := insertionSortIterative(arr)
+		fmt.Println("Array setelah diurutkan (Iteratif):", sortedArr)
+
+		// Menanyakan apakah pengguna ingin mencoba lagi
+		var choice string
+		fmt.Print("Apakah Anda ingin mencoba lagi (ya/tidak)? ")
+		fmt.Scan(&choice)
+
+		// Jika jawabannya tidak, keluar dari program
+		if choice != "ya" {
+			break
+		}
+	}
+}
