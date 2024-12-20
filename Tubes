@@ -1,84 +1,117 @@
-package main
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengurutan Array Rekursif dengan Insertion Sort</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: white;
+        }
+        h2 {
+            text-align: center;
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px 0;
+            width: 100%;
+            font-size: 16px;
+        }
+        .result {
+            margin-top: 20px;
+        }
+        .result p {
+            font-size: 18px;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Pengurutan Array Rekursif dengan Insertion Sort</h2>
+        <form id="sortForm">
+            <label for="arraySize">Masukkan jumlah elemen:</label>
+            <input type="number" id="arraySize" min="1" required>
 
-import (
-	"fmt"
-	"os"
-	"time"
-	"strconv"
-)
+            <label for="arrayElements">Masukkan elemen array (pisahkan dengan koma):</label>
+            <input type="text" id="arrayElements" required>
 
-// Fungsi untuk melakukan pengurutan menggunakan metode Insertion Sort Iteratif
-func insertionSortIterative(arr []int) []int {
-	start := time.Now()
-	// Melakukan pengurutan array dengan algoritma Insertion Sort
-	for i := 1; i < len(arr); i++ {
-		key := arr[i]
-		j := i - 1
-		// Memindahkan elemen yang lebih besar dari key ke posisi yang lebih kanan
-		for j >= 0 && arr[j] > key {
-			arr[j+1] = arr[j]
-			j--
-		}
-		// Menempatkan key di posisi yang benar
-		arr[j+1] = key
-	}
-	elapsed := time.Since(start)
-	// Menampilkan waktu eksekusi algoritma
-	fmt.Printf("Waktu eksekusi Iteratif: %v\n", elapsed)
-	return arr
-}
+            <button type="submit">Urutkan Array</button>
+        </form>
 
-func main() {
-	// Menampilkan antarmuka pengguna untuk memasukkan data
-	for {
-		var n int
-		// Meminta input jumlah elemen dari pengguna
-		fmt.Print("Masukkan jumlah elemen: ")
-		_, err := fmt.Scan(&n)
-		if err != nil || n <= 0 {
-			// Menangani input yang tidak valid
-			fmt.Println("Input tidak valid. Harap masukkan angka positif.")
-			continue
-		}
+        <div class="result">
+            <p id="beforeSort"></p>
+            <p id="afterSort"></p>
+            <p id="executionTime"></p>
+            <p id="error" class="error"></p>
+        </div>
+    </div>
 
-		// Membuat array dengan panjang sesuai input
-		arr := make([]int, n)
-		fmt.Println("Masukkan elemen array:")
+    <script>
+        // Fungsi untuk melakukan pengurutan dengan Insertion Sort secara rekursif
+        function insertionSortRecursive(arr, n) {
+            if (n <= 1) {
+                return;
+            }
 
-		// Meminta input untuk elemen array
-		for i := 0; i < n; i++ {
-			var element string
-			_, err := fmt.Scan(&element)
-			if err != nil {
-				// Menangani kesalahan input
-				fmt.Println("Input tidak valid. Pastikan Anda hanya memasukkan angka.")
-				os.Exit(1)
-			}
-			// Mengonversi input string menjadi angka
-			num, err := strconv.Atoi(element)
-			if err != nil {
-				// Menangani kesalahan konversi
-				fmt.Println("Input tidak valid. Pastikan Anda hanya memasukkan angka.")
-				os.Exit(1)
-			}
-			arr[i] = num
-		}
+            // Sort the first n-1 elements
+            insertionSortRecursive(arr, n - 1);
 
-		// Menampilkan array sebelum diurutkan
-		fmt.Println("Array sebelum diurutkan:", arr)
+            // Insert the last element at its correct position
+            let last = arr[n - 1];
+            let j = n - 2;
+            while (j >= 0 && arr[j] > last) {
+                arr[j + 1] = arr[j];
+                j--;
+            }
+            arr[j + 1] = last;
+        }
 
-		// Mengurutkan array dan menampilkan hasil
-		sortedArr := insertionSortIterative(arr)
-		fmt.Println("Array setelah diurutkan (Iteratif):", sortedArr)
+        // Event listener untuk menangani form submit
+        document.getElementById('sortForm').addEventListener('submit', function(event) {
+            event.preventDefault();
 
-		// Menanyakan apakah pengguna ingin mencoba lagi
-		var choice string
-		fmt.Print("Apakah Anda ingin mencoba lagi (ya/tidak)? ")
-		fmt.Scan(&choice)
+            // Mengambil input dari pengguna
+            const size = document.getElementById('arraySize').value;
+            const elements = document.getElementById('arrayElements').value.split(',').map(num => parseInt(num.trim()));
 
-		// Jika jawabannya tidak, keluar dari program
-		if choice != "ya" {
-			break
-		}
-	}
-}
+            // Validasi input elemen array
+            if (elements.length !== parseInt(size)) {
+                document.getElementById('error').innerText = "Jumlah elemen tidak sesuai dengan jumlah yang diminta.";
+                return;
+            }
+
+            document.getElementById('error').innerText = ""; // Clear previous error
+
+            // Menampilkan array sebelum diurutkan
+            document.getElementById('beforeSort').innerText = `Array sebelum diurutkan: [${elements.join(', ')}]`;
+
+            // Mengukur waktu eksekusi
+            const startTime = performance.now();
+
+            // Melakukan pengurutan array secara rekursif
+            insertionSortRecursive(elements, elements.length);
+
+            const endTime = performance.now();
+            const executionTime = (endTime - startTime).toFixed(4); // Waktu eksekusi dalam milidetik
+
+            // Menampilkan array setelah diurutkan dan waktu eksekusi
+            document.getElementById('afterSort').innerText = `Array setelah diurutkan (Rekursif): [${elements.join(', ')}]`;
+            document.getElementById('executionTime').innerText = `Waktu eksekusi Rekursif: ${executionTime} ms`;
+        });
+    </script>
+</body>
+</html>
+
