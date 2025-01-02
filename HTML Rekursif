@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insertion Sort & Min-Max Finder</title>
+    <script>
+        function insertionSortRecursive(arr, n) {
+            if (n <= 1) return;
+
+            insertionSortRecursive(arr, n - 1);
+
+            let key = arr[n - 1];
+            let j = n - 2;
+
+            while (j >= 0 && arr[j] > key) {
+                arr[j + 1] = arr[j];
+                j--;
+            }
+            arr[j + 1] = key;
+        }
+
+        function findMinMaxRecursive(arr, index, currentMin, currentMax) {
+            if (index === arr.length) return { min: currentMin, max: currentMax };
+
+            const newMin = arr[index] < currentMin ? arr[index] : currentMin;
+            const newMax = arr[index] > currentMax ? arr[index] : currentMax;
+
+            return findMinMaxRecursive(arr, index + 1, newMin, newMax);
+        }
+
+        function execute() {
+            const input = document.getElementById("arrayInput").value;
+            const arr = input.split(',').map(Number);
+
+            if (arr.some(isNaN)) {
+                alert("Harap masukkan angka yang valid dipisahkan dengan koma.");
+                return;
+            }
+
+            const startSort = performance.now();
+            insertionSortRecursive(arr, arr.length);
+            const elapsedSort = performance.now() - startSort;
+
+            const startMinMax = performance.now();
+            const { min, max } = findMinMaxRecursive(arr, 0, arr[0], arr[0]);
+            const elapsedMinMax = performance.now() - startMinMax;
+
+            document.getElementById("result").innerHTML = `
+                <p>Array setelah diurutkan (Rekursif): [${arr.join(", ")}]</p>
+                <p>Nilai minimum: ${min}, Nilai maksimum: ${max}</p>
+                <p>Jumlah min dan max: ${min + max}</p>
+                <p>Waktu eksekusi pengurutan rekursif: ${elapsedSort.toFixed(2)} ms</p>
+            `;
+        }
+    </script>
+</head>
+<body>
+    <h1>Insertion Sort & Min-Max Finder</h1>
+    <p>Masukkan elemen array yang dipisahkan dengan koma (contoh: 10,5,3,8):</p>
+    <input type="text" id="arrayInput" placeholder="Masukkan elemen array">
+    <button onclick="execute()">Proses</button>
+    <div id="result"></div>
+</body>
+</html>
