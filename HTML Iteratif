@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insertion Sort & Min-Max Finder (Iterative)</title>
+    <script>
+        // Insertion Sort Iterative
+        function insertionSortIterative(arr) {
+            const start = performance.now();
+            for (let i = 1; i < arr.length; i++) {
+                let key = arr[i];
+                let j = i - 1;
+                while (j >= 0 && arr[j] > key) {
+                    arr[j + 1] = arr[j];
+                    j--;
+                }
+                arr[j + 1] = key;
+            }
+            const elapsed = performance.now() - start;
+            return { sortedArr: arr, elapsed };
+        }
+
+        // Find Min and Max Iterative
+        function findMinMaxIterative(arr) {
+            let min = arr[0], max = arr[0];
+            for (let i = 1; i < arr.length; i++) {
+                if (arr[i] < min) min = arr[i];
+                if (arr[i] > max) max = arr[i];
+            }
+            return { min, max };
+        }
+
+        function execute() {
+            const input = document.getElementById("arrayInput").value;
+            const arr = input.split(',').map(Number);
+
+            if (arr.some(isNaN)) {
+                alert("Please enter valid numbers separated by commas.");
+                return;
+            }
+
+            // Perform Iterative Insertion Sort
+            const { sortedArr, elapsed } = insertionSortIterative([...arr]);
+
+            // Find Min and Max Iteratively
+            const { min, max } = findMinMaxIterative(arr);
+
+            // Display results
+            document.getElementById("result").innerHTML = `
+                <p>Array before sorting: [${arr.join(", ")}]</p>
+                <p>Array after sorting (Iterative): [${sortedArr.join(", ")}]</p>
+                <p>Minimum value: ${min}, Maximum value: ${max}</p>
+                <p>Sum of min and max: ${min + max}</p>
+                <p>Sorting execution time (Iterative): ${elapsed.toFixed(2)} ms</p>
+            `;
+        }
+    </script>
+</head>
+<body>
+    <h1>Insertion Sort & Min-Max Finder (Iterative)</h1>
+    <p>Enter array elements separated by commas (e.g., 10,5,3,8):</p>
+    <input type="text" id="arrayInput" placeholder="Enter array elements">
+    <button onclick="execute()">Process</button>
+    <div id="result"></div>
+</body>
+</html>
