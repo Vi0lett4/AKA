@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Insertion Sort & Min-Max Finder</title>
+    <title>Insertion Sort & Min-Max Finder (Recursive) </title>
     <script>
         function insertionSortRecursive(arr, n) {
             if (n <= 1) return;
@@ -50,7 +50,6 @@
                 <p>Array setelah diurutkan (Rekursif): [${arr.join(", ")}]</p>
                 <p>Nilai minimum: ${min}, Nilai maksimum: ${max}</p>
                 <p>Jumlah min dan max: ${min + max}</p>
-                <p>Waktu eksekusi pengurutan rekursif: ${elapsedSort.toFixed(2)} ms</p>
             `;
         }
     </script>
