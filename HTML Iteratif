@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Insertion Sort & Min-Max Finder (Iterative)</title>
+    <title> Insertion Sort & Min-Max Finder (Iterative) </title>
     <script>
         // Insertion Sort Iterative
         function insertionSortIterative(arr) {
@@ -48,18 +48,16 @@
 
             // Display results
             document.getElementById("result").innerHTML = `
-                <p>Array before sorting: [${arr.join(", ")}]</p>
-                <p>Array after sorting (Iterative): [${sortedArr.join(", ")}]</p>
-                <p>Minimum value: ${min}, Maximum value: ${max}</p>
-                <p>Sum of min and max: ${min + max}</p>
-                <p>Sorting execution time (Iterative): ${elapsed.toFixed(2)} ms</p>
+                <p>Array setelah diurutkan (Iterative): [${sortedArr.join(", ")}]</p>
+                <p>Nilai Minimun: ${min}, Nilai Maksimum: ${max}</p>
+                <p>Jumlah min dan Max: ${min + max}</p>
             `;
         }
     </script>
 </head>
 <body>
-    <h1>Insertion Sort & Min-Max Finder (Iterative)</h1>
-    <p>Enter array elements separated by commas (e.g., 10,5,3,8):</p>
+    <h1>Insertion Sort & Min-Max Finder</h1>
+    <p>Masukkan elemen array yang dipisahkan dengan koma (contoh: 10,5,3,8):</p>
     <input type="text" id="arrayInput" placeholder="Enter array elements">
     <button onclick="execute()">Process</button>
     <div id="result"></div>
